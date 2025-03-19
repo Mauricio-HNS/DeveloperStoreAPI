@@ -1,4 +1,5 @@
 ﻿using DeveloperStore.API.Entities;
+using DeveloperStore.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

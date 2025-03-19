@@ -3,51 +3,53 @@ using DeveloperStore.API.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DeveloperStore.API.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly DeveloperStoreDbContext _context;
 
-        public ProductRepository(ApplicationDbContext context)
+        public ProductRepository(DeveloperStoreDbContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<Product> GetAllProducts()
+        // Usando assíncrono para evitar bloqueio de threads
+        public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            return _context.Products.ToList();
+            return await _context.Products.ToListAsync();
         }
 
-        public Product GetProductById(int id)
+        public async Task<Product> GetProductByIdAsync(int id)
         {
-            return _context.Products.FirstOrDefault(p => p.ProductId == id);
+            return await _context.Products
+                .FirstOrDefaultAsync(p => p.ProductId == id);
         }
 
-        public Product CreateProduct(Product product)
+        public async Task<Product> CreateProductAsync(Product product)
         {
             _context.Products.Add(product);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();  // Operação assíncrona
             return product;
         }
 
-        public Product UpdateProduct(Product product)
+        public async Task<Product> UpdateProductAsync(Product product)
         {
             _context.Products.Update(product);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();  // Operação assíncrona
             return product;
         }
 
-        public void DeleteProduct(int id)
+        public async Task DeleteProductAsync(int id)
         {
-            var product = _context.Products.Find(id);
+            var product = await _context.Products.FindAsync(id);  // Operação assíncrona
             if (product != null)
             {
                 _context.Products.Remove(product);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();  // Operação assíncrona
             }
         }
     }
 }
-
