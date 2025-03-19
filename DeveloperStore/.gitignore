@@ -1,0 +1,45 @@
+# Ignore bin and obj folders
+bin/
+obj/
+
+# Ignore Visual Studio temporary files, folders, and files
+.vs/
+.vscode/
+.idea/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer files
+Thumbs.db
+ehthumbs.db
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Ignore JetBrains Rider files
+.idea/
+
+# Ignore NUnit test results
+TestResult.xml
+nunit-*.xml
+
+# Ignore ASP.NET Core files
+appsettings.Development.json
+
+# Ignore generated files from dotnet build
+project.lock.json
+project.fragment.lock.json
+
+# Ignore directories used by Visual Studio for debugging
+.vs2019/
+.vs2017/
