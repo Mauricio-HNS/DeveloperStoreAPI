@@ -1,6 +1,6 @@
-﻿using DeveloperStore.API.Models;
+﻿using DeveloperStore.API.Entities;
 using DeveloperStore.API.Data;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;  // Verifique se esta linha está presente
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,21 +8,21 @@ namespace DeveloperStore.API.Repositories
 {
     public class SaleItemRepository : ISaleItemRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly DeveloperStoreDbContext _context;
 
-        public SaleItemRepository(ApplicationDbContext context)
+        public SaleItemRepository(DeveloperStoreDbContext context)
         {
             _context = context;
         }
 
         public IEnumerable<SaleItem> GetAllSaleItems()
         {
-            return _context.SaleItems.Include(si => si.Product).ToList();
+            return _context.SaleItems.Include(si => si.Product).ToList(); // Inclui o produto associado
         }
 
         public SaleItem GetSaleItemById(int id)
         {
-            return _context.SaleItems.Include(si => si.Product).FirstOrDefault(si => si.SaleItemId == id);
+            return _context.SaleItems.Include(si => si.Product).FirstOrDefault(si => si.Id == id); // Alterado para 'Id'
         }
 
         public SaleItem CreateSaleItem(SaleItem saleItem)
@@ -48,6 +48,25 @@ namespace DeveloperStore.API.Repositories
                 _context.SaveChanges();
             }
         }
+
+        IEnumerable<Models.SaleItem> ISaleItemRepository.GetAllSaleItems()
+        {
+            throw new NotImplementedException();
+        }
+
+        Models.SaleItem ISaleItemRepository.GetSaleItemById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Models.SaleItem CreateSaleItem(Models.SaleItem saleItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Models.SaleItem UpdateSaleItem(Models.SaleItem saleItem)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
-

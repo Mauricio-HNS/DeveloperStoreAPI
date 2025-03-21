@@ -1,7 +1,8 @@
 ﻿using DeveloperStore.API.Models;
+using DeveloperStore.Domain.Entities;  // Usando a entidade de domínio
 using DeveloperStore.API.Data;
 using System.Collections.Generic;
-using System.Linq; // LINQ para ToList(), FirstOrDefault(), etc.
+using System.Linq;
 
 namespace DeveloperStore.API.Repositories
 {
@@ -14,28 +15,27 @@ namespace DeveloperStore.API.Repositories
             _context = context;
         }
 
-        // Método correto para obter todas as filiais
+        // Implementa o método do repositório para retornar todas as filiais como entidades (Branch)
         public IEnumerable<Branch> GetAllBranches()
         {
-            // Aqui, _context.Branches deve ser do tipo DbSet<Branch>
-            return _context.Branches.ToList();  // ToList() funciona aqui
+            return _context.Branches.ToList(); // Retorna as entidades (não convertidas)
         }
 
-        // Método correto para obter uma filial pelo ID
+        // Implementa o método do repositório para obter uma filial por ID
         public Branch GetBranchById(int id)
         {
-            return _context.Branches.FirstOrDefault(b => b.BranchId == id);  // FirstOrDefault() funciona aqui
+            return _context.Branches.FirstOrDefault(b => b.BranchId == id); // Retorna a entidade Branch
         }
 
-        // Método para criar uma filial
+        // Método de criação de uma filial
         public Branch CreateBranch(Branch branch)
         {
-            _context.Branches.Add(branch);  // Add() funciona aqui
+            _context.Branches.Add(branch);
             _context.SaveChanges();
             return branch;
         }
 
-        // Método para atualizar uma filial
+        // Método de atualização de uma filial
         public Branch UpdateBranch(Branch branch)
         {
             _context.Branches.Update(branch);
@@ -43,13 +43,13 @@ namespace DeveloperStore.API.Repositories
             return branch;
         }
 
-        // Método para deletar uma filial
+        // Método para excluir uma filial
         public void DeleteBranch(int id)
         {
             var branch = _context.Branches.Find(id);
             if (branch != null)
             {
-                _context.Branches.Remove(branch);  // Remove() funciona aqui
+                _context.Branches.Remove(branch);
                 _context.SaveChanges();
             }
         }

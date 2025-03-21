@@ -1,62 +1,110 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using DeveloperStore.API.Models;
-using DeveloperStore.API.Services;
+﻿using DeveloperStore.API.Models;
+using DeveloperStore.API.Repositories;
+using DeveloperStore.Domain.Entities;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace DeveloperStore.API.Controllers
+namespace DeveloperStore.API.Services
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class BranchController : ControllerBase
+    public class BranchService : IBranchService
     {
-        private readonly IBranchService _branchService;
+        private readonly IBranchRepository _branchRepository;
 
-        public BranchController(IBranchService branchService)
+        public BranchService(IBranchRepository branchRepository)
         {
-            _branchService = branchService;
+            _branchRepository = branchRepository;
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<Branch>> GetAllBranches()
+        // Get all branches, mapping from entity to DTO
+        public IEnumerable<BranchModel> GetAllBranches()
         {
-            return Ok(_branchService.GetAllBranches());
-        }
-
-        [HttpGet("{id}")]
-        public ActionResult<Branch> GetBranchById(int id)
-        {
-            var branch = _branchService.GetBranchById(id);
-            if (branch == null)
+            return _branchRepository.GetAllBranches().Select(b => new BranchModel
             {
-                return NotFound();
-            }
-            return Ok(branch);
+                BranchId = b.BranchId,
+                Name = b.Name,
+                Address = b.Address
+            });
         }
 
-        [HttpPost]
-        public ActionResult<Branch> CreateBranch(Branch branch)
+        // Get a branch by ID, mapping from entity to DTO
+        public BranchModel GetBranchById(int id)
         {
-            var createdBranch = _branchService.CreateBranch(branch);
-            return CreatedAtAction(nameof(GetBranchById), new { id = createdBranch.BranchId }, createdBranch);
-        }
+            var branch = _branchRepository.GetBranchById(id);
+            if (branch == null) return null;
 
-        [HttpPut("{id}")]
-        public ActionResult<Branch> UpdateBranch(int id, Branch branch)
-        {
-            if (id != branch.BranchId)
+            return new BranchModel
             {
-                return BadRequest();
-            }
-
-            var updatedBranch = _branchService.UpdateBranch(branch);
-            return Ok(updatedBranch);
+                BranchId = branch.BranchId,
+                Name = branch.Name,
+                Address = branch.Address
+            };
         }
 
-        [HttpDelete("{id}")]
-        public ActionResult DeleteBranch(int id)
+        // Create a new branch and return the created branch as a DTO
+        public BranchModel CreateBranch(BranchModel branchModel)
         {
-            _branchService.DeleteBranch(id);
-            return NoContent();
+            var branchEntity = new Branch
+            {
+                Name = branchModel.Name,
+                Address = branchModel.Address
+            };
+
+            var createdBranch = _branchRepository.CreateBranch(branchEntity);
+            return new BranchModel
+            {
+                BranchId = createdBranch.BranchId,
+                Name = createdBranch.Name,
+                Address = createdBranch.Address
+            };
+        }
+
+        // Update an existing branch and return the updated branch as a DTO
+        public BranchModel UpdateBranch(BranchModel branchModel)
+        {
+            var branchEntity = _branchRepository.GetBranchById(branchModel.BranchId);
+            if (branchEntity == null) return null;
+
+            branchEntity.Name = branchModel.Name;
+            branchEntity.Address = branchModel.Address;
+
+            var updatedBranch = _branchRepository.UpdateBranch(branchEntity);
+            return new BranchModel
+            {
+                BranchId = updatedBranch.BranchId,
+                Name = updatedBranch.Name,
+                Address = updatedBranch.Address
+            };
+        }
+
+        // Delete a branch by its ID
+        public void DeleteBranch(int id)
+        {
+            _branchRepository.DeleteBranch(id);
+        }
+
+        IEnumerable<Branch> IBranchService.GetAllBranches()
+        {
+            throw new NotImplementedException();
+        }
+
+        Branch IBranchService.GetBranchById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Branch CreateBranch(Branch branch)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Branch UpdateBranch(Branch branch)
+        {
+            throw new NotImplementedException();
+        }
+
+        object IBranchService.CreateBranch(Branch branch)
+        {
+            throw new NotImplementedException();
         }
     }
 }

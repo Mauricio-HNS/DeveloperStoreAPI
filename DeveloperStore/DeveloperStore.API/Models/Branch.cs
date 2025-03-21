@@ -1,10 +1,9 @@
 ﻿namespace DeveloperStore.API.Models
 {
-    public class Branch
+    public class BranchModel
     {
-        public int Id { get; set; }
+        public int BranchId { get; set; }
         public string Name { get; set; }
-        public string Location { get; set; }
-        public int BranchId { get; internal set; }
+        public string Address { get; set; }
     }
 }

@@ -1,15 +1,11 @@
-﻿using DeveloperStore.API.Models;
-using System.Collections.Generic;
+﻿using DeveloperStore.Domain.Entities;
 
-namespace DeveloperStore.API.Repositories
+public interface IBranchRepository
 {
-    public interface IBranchRepository
-    {
-        IEnumerable<Branch> GetAllBranches();
-        Branch GetBranchById(int id);
-        Branch CreateBranch(Branch branch);
-        Branch UpdateBranch(Branch branch);
-        void DeleteBranch(int id);
-    }
+    // Correct return type to match the entity type
+    IEnumerable<Branch> GetAllBranches();
+    Branch GetBranchById(int id);
+    Branch CreateBranch(Branch branch);
+    Branch UpdateBranch(Branch branch);
+    void DeleteBranch(int id);
 }
-

@@ -1,5 +1,6 @@
-﻿using DeveloperStore.API.Models;
+﻿using DeveloperStore.API.Models;  // For BranchModel
 using DeveloperStore.API.Repositories;
+using DeveloperStore.Domain.Entities;  // For Branch entity
 using System.Collections.Generic;
 
 namespace DeveloperStore.API.Services
@@ -13,24 +14,59 @@ namespace DeveloperStore.API.Services
             _branchRepository = branchRepository;
         }
 
-        public IEnumerable<Branch> GetAllBranches()
+        // Convert Branch entity to BranchModel
+        private BranchModel ConvertToBranchModel(Branch branch)
         {
-            return _branchRepository.GetAllBranches();
+            return new BranchModel
+            {
+                BranchId = branch.BranchId,
+                Name = branch.Name,
+                Address = branch.Address
+            };
         }
 
-        public Branch GetBranchById(int id)
+        // Convert BranchModel to Branch entity
+        private Branch ConvertToBranchEntity(BranchModel branchModel)
         {
-            return _branchRepository.GetBranchById(id);
+            return new Branch
+            {
+                BranchId = branchModel.BranchId,
+                Name = branchModel.Name,
+                Address = branchModel.Address
+            };
         }
 
-        public Branch CreateBranch(Branch branch)
+        public IEnumerable<BranchModel> GetAllBranches()
         {
-            return _branchRepository.CreateBranch(branch);
+            var branches = _branchRepository.GetAllBranches();  // Assuming this returns List<Branch>
+            var branchModels = new List<BranchModel>();
+
+            foreach (var branch in branches)
+            {
+                branchModels.Add(ConvertToBranchModel(branch));  // Convert entity to DTO
+            }
+
+            return branchModels;
         }
 
-        public Branch UpdateBranch(Branch branch)
+        public BranchModel GetBranchById(int id)
         {
-            return _branchRepository.UpdateBranch(branch);
+            var branch = _branchRepository.GetBranchById(id);
+            return branch == null ? null : ConvertToBranchModel(branch);  // Convert entity to DTO
+        }
+
+        public BranchModel CreateBranch(BranchModel branchModel)
+        {
+            var branchEntity = ConvertToBranchEntity(branchModel);  // Convert DTO to entity
+            var createdBranch = _branchRepository.CreateBranch(branchEntity);
+            return ConvertToBranchModel(createdBranch);  // Convert entity to DTO
+        }
+
+        public BranchModel UpdateBranch(BranchModel branchModel)
+        {
+            var branchEntity = ConvertToBranchEntity(branchModel);  // Convert DTO to entity
+            var updatedBranch = _branchRepository.UpdateBranch(branchEntity);
+            return ConvertToBranchModel(updatedBranch);  // Convert entity to DTO
         }
 
         public void DeleteBranch(int id)

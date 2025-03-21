@@ -1,4 +1,5 @@
 ﻿using DeveloperStore.API.Models;
+using DeveloperStore.Domain.Entities;
 using System.Collections.Generic;
 
 namespace DeveloperStore.API.Services
@@ -10,6 +11,7 @@ namespace DeveloperStore.API.Services
         Branch CreateBranch(Branch branch);
         Branch UpdateBranch(Branch branch);
         void DeleteBranch(int id);
+        object CreateBranch(Branch branch);
     }
 }
 

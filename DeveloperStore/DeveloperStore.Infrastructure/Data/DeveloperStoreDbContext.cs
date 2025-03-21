@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using DeveloperStore.API.Entities;  // Ou o namespace onde suas entidades estão
+using DeveloperStore.API.Entities;
+using DeveloperStore.Domain.Entities;  // Verifique se este namespace está correto
 
-namespace DeveloperStore.API.Data  // ou o namespace onde você está criando a DbContext
+namespace DeveloperStore.API.Data
 {
     public class DeveloperStoreDbContext : DbContext
     {
@@ -12,9 +13,8 @@ namespace DeveloperStore.API.Data  // ou o namespace onde você está criando a 
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public object Branches { get; set; }
-        public object Sales { get; set; }
-
-        // Adicione mais DbSet para outras entidades
+        public DbSet<Branch> Branches { get; set; }
+        public DbSet<Sale> Sales { get; set; }
+        public DbSet<SaleItem> SaleItems { get; set; }  // Corrigido para DbSet<SaleItem>
     }
 }

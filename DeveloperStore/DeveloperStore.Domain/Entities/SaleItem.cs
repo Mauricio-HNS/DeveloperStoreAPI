@@ -17,6 +17,7 @@ namespace DeveloperStore.API.Entities
         public decimal UnitPrice { get; set; }
         public decimal Discount { get; set; }
         public decimal TotalAmount { get; set; }
+        public int Id { get; set; }
     }
 }
 

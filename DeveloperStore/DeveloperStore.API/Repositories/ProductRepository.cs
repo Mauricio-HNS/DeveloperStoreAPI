@@ -1,4 +1,4 @@
-﻿using DeveloperStore.API.Models;
+﻿using DeveloperStore.API.Entities;
 using DeveloperStore.API.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -50,6 +50,31 @@ namespace DeveloperStore.API.Repositories
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();  // Operação assíncrona
             }
+        }
+
+        public IEnumerable<Models.Product> GetAllProducts()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Models.Product GetProductById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Models.Product CreateProduct(Models.Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Models.Product UpdateProduct(Models.Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteProduct(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
